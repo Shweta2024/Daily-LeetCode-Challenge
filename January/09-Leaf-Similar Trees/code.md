@@ -1,7 +1,13 @@
 ## Approach:-
 
 1. We'll take two strings ``leafOfR1`` and ``leafOfR2``, that will store the values of leaf nodes of root1 and root2 respectively.
-2. If the values of ``leafOfR1`` and ``leafOfR2`` are equal we'll return true otherwise we'll return false.
+2. Populate ``leafOfR1`` and ``leafOfR2``, by making a call to ``findLeafNodes`` function.
+3. . If the values of ``leafOfR1`` and ``leafOfR2`` are equal we'll return true otherwise we'll return false.
+
+findLeafNodes function:-
+1. If root->left == NULL && root->right == NULL, it means that the current node is the leaf node, so add it to the ``leafNodes`` string with a seperator.
+2. Make a left call ONLY when the left of root exists.
+3. Similarly, make a right call ONLY when the right of root exists.
 
 <br>
 
