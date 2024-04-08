@@ -1,56 +1,53 @@
 
 ## CODE 1 : using Hashmap & Stack
-
 ```cpp
 
 class Solution {
 public:
-    string minRemoveToMakeValid(string s)
+    string minRemoveToMakeValid(string s) 
     {
-        int open = 0;
-        // identifying invalid closing
+        stack<pair<char,int>>stk; // element : index
+        
+        // identify invalid parenthese
         for(int index = 0; index < s.size(); index++)
         {
             if(s[index] == '(')
-                open++;
+                stk.push({s[index],index});
             else if(s[index] == ')')
             {
-                if(open == 0)
-                    s[index] = '*';
+                if(!stk.empty() && stk.top().first == '(') // {'(',0}
+                    stk.pop();
                 else
-                    open--;
+                    stk.push({s[index],index});
             }
         }
         
-        int close = 0;
-        // identify invalid opening 
-        for(int index = s.size()-1; index >= 0; index--)
+        unordered_map<int,bool>memo; // index : ture/false
+        while(!stk.empty())
         {
-            if(s[index] == ')')
-                close++;
-            else if(s[index] == '(')
-            {
-                if(close == 0)
-                    s[index] = '*';
-                else
-                    close--;
-            }
+            memo[stk.top().second] = true;
+            stk.pop();
         }
         
+        // populate our ans
         string ans = "";
-        for(auto current : s)
+        for(int index = 0; index < s.size(); index++)
         {
-            if(current != '*')
-                ans += current;
+            if(!memo[index])
+                ans += s[index];
         }
         return ans;
     }
 };
+
 /*
+n->size of s
 Time Complexity = O(n)
 Space Complexity = O(2n)*/
 
 ```
+
+
 
 ## CODE 2 : using Stack
 
@@ -101,48 +98,53 @@ Space Complexity = O(n)*/
 
 ## CODE 3 : without extra space 
 
+
 ```cpp
 
 class Solution {
 public:
-    string minRemoveToMakeValid(string s) 
+    string minRemoveToMakeValid(string s)
     {
-        stack<pair<char,int>>stk; // element : index
-        
-        // identify invalid parenthese
+        int open = 0;
+        // identifying invalid closing
         for(int index = 0; index < s.size(); index++)
         {
             if(s[index] == '(')
-                stk.push({s[index],index});
+                open++;
             else if(s[index] == ')')
             {
-                if(!stk.empty() && stk.top().first == '(') // {'(',0}
-                    stk.pop();
+                if(open == 0)
+                    s[index] = '*';
                 else
-                    stk.push({s[index],index});
+                    open--;
             }
         }
         
-        unordered_map<int,bool>memo; // index : ture/false
-        while(!stk.empty())
+        int close = 0;
+        // identify invalid opening 
+        for(int index = s.size()-1; index >= 0; index--)
         {
-            memo[stk.top().second] = true;
-            stk.pop();
+            if(s[index] == ')')
+                close++;
+            else if(s[index] == '(')
+            {
+                if(close == 0)
+                    s[index] = '*';
+                else
+                    close--;
+            }
         }
         
-        // populate our ans
         string ans = "";
-        for(int index = 0; index < s.size(); index++)
+        for(auto current : s)
         {
-            if(!memo[index])
-                ans += s[index];
+            if(current != '*')
+                ans += current;
         }
         return ans;
     }
 };
-
 /*
-n->size of s
 Time Complexity = O(n)
 Space Complexity = O(1)*/
 
